@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="http://s3.amazonaws.com/codecademy-content/projects/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/main.css" rel="stylesheet" />
+    <style>
+    .popover{
+    max-width: 100%;
+ /* Max Width of the popover (depending on the container!) */
+    
+} 
+    .container{
+      background-image:url("http://static2.wallpedes.com/wallpaper/weather/weather-during-storm-free-desktop-background-wallpaper-image-wallpaper-weather-desktop-direct-hd-download-for-iphone-ipad-borders-free-naruto-mobile-3d.jpg");
+      background-repeat: no-repeat;
+      background-position:0% 50%;
+    }
+    </style>
+    <!-- Include the AngularJS library -->
+   <!-- <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places" type="text/javascript"></script>-->
+     <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=places&language=en"></script>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+       
+
+            <script data-require="angular.js@1.2.x" src="https://code.angularjs.org/1.2.16/angular.js" data-semver="1.2.16"></script>
+            <script data-require="bootstrap@*" data-semver="3.1.1" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+            <script type="text/javascript">
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover({
+        placement : 'right'
+    });
+});
+</script>
+  </head>
+  <body ng-app="ForecastApp" >
+
+    <div class="jumbotron" ng-controller="MainController">
+      <div class="container" style="background-image:url("http://static2.wallpedes.com/wallpaper/weather/weather-during-storm-free-desktop-background-wallpaper-image-wallpaper-weather-desktop-direct-hd-download-for-iphone-ipad-borders-free-naruto-mobile-3d.jpg")">
+        <div class="form-inline" role="form">
+        <input type="text" class="form-control" placeholder="city" ng-model="city" id="city" autocomplete="on" style="width:25%" >
+        <input type="submit" class="btn btn-primary btn-sm" value="Get Details" ng-click="findWeather(city)">
+      </div>
+      <div ng-show="city">
+        <h2>Forecast for {{city}}</h2>
+        <p>Current Temperature:{{data.data.current_condition[0].temp_F}} &deg;F, {{data.data.current_condition[0].weatherDesc[0].value}} <img src={{data.data.current_condition[0].weatherIconUrl[0].value}} height="4%", width="4%"></p>
+        
+        <p>Current Time:{{t.data.time_zone[0].localtime.substring(11,16)| date:'shortTime'}}
+         <h2>Weather Details for next five days</h2>
+          <table class="table table-condensed" style="width:50%">
+   
+   <thead style="background-color:black;color:white">
+      <tr>
+         <th>DAY</th>
+         <th>HIGH</th>
+         <th>LOW</th>
+         <th>UV INDEX</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr ng-repeat="forecast in data.data.weather">
+         <td>{{forecast.date|date:'fullDate'}}</td>
+         <td>{{forecast.maxtempF}}</td>
+         <td>{{forecast.mintempF}}</td>
+         <td>{{forecast.uvIndex}}</td>
+      </tr>
+    </tbody>
+  </table>
+      
+      <div class="panel panel-primary" style="width:70%" ng-repeat="news in news">
+   <div class="panel-heading">
+      <h3 class="panel-title">{{news.title}}</h3>
+   </div>
+   <div class="panel-body">
+      <p>{{news.body}}<a href="#" data-toggle="popover" data-content={{news.content}} data-trigger="focus" title={{news.title}}>more...</a></p>
+   </div>
+</div>
+</div>
+ </div>
+    </div>
+    <script type=text/javascript>
+         
+ var options = {
+  types: ['(cities)'],
+  componentRestrictions: {country: "us"}
+ };
+
+ 
+
+//google.maps.event.addDomListener(window, 'load', initialize);*/
+
+    
+      var input = document.getElementById('city');
+      var autocomplete = new google.maps.places.Autocomplete(input,options);
+    
+       </script>
+
+    <!-- Modules -->
+    <script src="js/app.js"></script>
+
+    <!-- Controllers -->
+    <script src="js/controllers/MainController.js"></script>
+
+    <!-- Services -->
+    <script src="js/services/forecast.js"></script>
+
+    <!-- Directives -->
+
+
+  </body>
+</html>
